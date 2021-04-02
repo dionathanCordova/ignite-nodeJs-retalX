@@ -1,0 +1,8 @@
+.env
+node_modules/
+dist/
+.vscode/
+tmp/*
+tmp/avatar/*
+!tmp/.gitkeep
+!tmp/avatar/

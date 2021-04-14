@@ -18,6 +18,8 @@ export default class CarsRepository implements ICarsRepository {
       description,
       fine_amount,
       license_plate,
+      specification,
+      id,
    }: ICreateCarDTO): Promise<Car> {
       const car = this.repository.create({
          brand,
@@ -27,6 +29,8 @@ export default class CarsRepository implements ICarsRepository {
          description,
          fine_amount,
          license_plate,
+         specification,
+         id,
       });
 
       await this.repository.save(car);
@@ -36,5 +40,27 @@ export default class CarsRepository implements ICarsRepository {
 
    async findByLicensePlate(license_plate: string): Promise<Car> {
       return this.repository.findOne({ license_plate });
+   }
+
+   async findAllAvailable(brand?: string, category_id?: string, name?: string): Promise<Car[]> {
+      const carsQuery = this.repository.createQueryBuilder("c").where("available = :available", { available: true });
+
+      if (brand) {
+         carsQuery.andWhere("c.brand = :brand", { brand });
+      }
+
+      if (name) {
+         carsQuery.andWhere("c.name = :name", { name });
+      }
+
+      if (category_id) {
+         carsQuery.andWhere("c.category_id = :category_id", { category_id });
+      }
+
+      return carsQuery.getMany();
+   }
+
+   async findById(car_id: string): Promise<Car> {
+      return this.repository.findOne({ id: car_id });
    }
 }

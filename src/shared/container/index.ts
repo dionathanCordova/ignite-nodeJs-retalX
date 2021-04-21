@@ -15,8 +15,12 @@ import CarsRepository from "@modules/cars/infra/typeorm/repositories/CarsReposit
 import ICarImageRepository from "@modules/cars/repositories/ICarImageRepoitory";
 import CarImageRepository from "@modules/cars/infra/typeorm/repositories/CarImageRepository";
 
+import IRentalsRepository from "@modules/rentals/repositories/IRentalsRepository";
+import RentalRepository from "@modules/rentals/infra/typeorm/repositories/RentalRepository";
+
 container.registerSingleton<ICategoryRepository>("CategoryRepository", CategoryRepository);
 container.registerSingleton<ISpecificationRepository>("SpecificationRepository", SpecificationRepository);
 container.registerSingleton<IUsersRepository>("UserRepository", UserRepository);
 container.registerSingleton<ICarsRepository>("CarsRepository", CarsRepository);
 container.registerSingleton<ICarImageRepository>("CarImageRepository", CarImageRepository);
+container.registerSingleton<IRentalsRepository>("RentalRepository", RentalRepository);

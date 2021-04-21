@@ -20,9 +20,7 @@ export default class CreateSpecificationUseCase {
    ) {}
 
    async execute({ car_id, specification_id }: IRequest): Promise<Car> {
-      console.log(car_id);
       const cars = await this.carsRepository.findAllAvailable();
-      console.log(cars);
 
       const car = await this.carsRepository.findById(car_id);
 

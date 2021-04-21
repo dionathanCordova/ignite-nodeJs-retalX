@@ -1,3 +1,4 @@
+import Rentals from "@modules/rentals/infra/typeorm/entities/Rentals";
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 import Category from "./Category";
@@ -47,6 +48,9 @@ export default class Car {
       inverseJoinColumns: [{ name: "specification_id" }],
    })
    specification: Specification[];
+
+   @ManyToMany(() => Rentals)
+   rentals: Rentals[];
 
    @Column()
    category_id: string;

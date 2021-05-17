@@ -9,7 +9,7 @@
       "mig:create": "yarn typeorm migration:create -n",
       "mig:run": "yarn typeorm migration:run",
       "mig:revert": "yarn typeorm migration:revert",
-      "test": "jest",
+      "test": "NODE_ENV=test jest",
       "seed:admin": "ts-node-dev src/shared/infra/typeorm/seed/admin.ts"
    },
    "dependencies": {
@@ -22,6 +22,7 @@
       "multer": "^1.4.2",
       "pg": "^8.5.1",
       "reflect-metadata": "^0.1.13",
+      "sqlite3": "^5.0.2",
       "swagger-ui-express": "^4.1.6",
       "tsyringe": "^4.5.0",
       "typeorm": "^0.2.31",

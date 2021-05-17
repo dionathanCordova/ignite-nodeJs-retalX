@@ -1,58 +1,64 @@
 import app from "@shared/infra/http/app";
 import request from "supertest";
 import createAdmin from "@shared/infra/typeorm/seed/admin";
-import connection from "@shared/infra/typeorm";
+import clearDataBase from "@shared/infra/typeorm/seed/clearDatabase";
+import createConnection from "@shared/infra/typeorm";
+
+let adminToken: string;
 
 describe("Create category controller", () => {
    beforeAll(async () => {
-      await (await connection).runMigrations();
-      const user = createAdmin();
-   });
+      await (await createConnection).runMigrations();
+      await createAdmin();
 
-   afterAll(async () => {
-      (await connection).dropDatabase();
-      await (await connection).close();
-   });
-
-   it("should be able to craeate a new category", async () => {
       const responseToken = await request(app).post("/session").send({
          email: "admin@rentX.com.br",
          password: "admin",
       });
 
       const { token } = responseToken.body;
+      adminToken = token;
+   });
 
+   afterAll(async () => {
+      await clearDataBase();
+   });
+
+   it("should be able to craeate a new category", async () => {
       const response = await request(app)
-         .post("/category")
+         .post("/categories/create")
          .send({
             name: "Category superteste",
             description: "Category superteste",
          })
          .set({
-            Authorizarion: `Baere ${token}`,
+            Authorization: `Bearer ${adminToken}`,
          });
 
       expect(response.status).toBe(201);
    });
 
    it("should not be able do create a new category with name exists", async () => {
-      const responseToken = await request(app).post("/session").send({
-         email: "admin@rentX.com.br",
-         password: "admin",
-      });
-
-      const { token } = responseToken.body;
-
-      const response = await request(app)
-         .post("/category")
+      await request(app)
+         .post("/categories/create")
          .send({
             name: "Category superteste",
             description: "Category superteste",
          })
          .set({
-            Authorizarion: `Baere ${token}`,
+            Authorization: `Bearer ${adminToken}`,
          });
 
-      expect(response.status).toBe(400);
+      const response = await request(app)
+         .post("/categories/create")
+         .send({
+            name: "Category superteste",
+            description: "Category superteste",
+         })
+         .set({
+            Authorization: `Bearer ${adminToken}`,
+         });
+
+      expect(response.status).toBe(401);
    });
 });

@@ -11,9 +11,9 @@ const connection = {
       migrationsDir: process.env.DB_MIGRATIONS_DIR,
    },
    synchronize: false,
-   logging: process.env.NODE_ENV == "development" ? true : false,
+   logging: process.env.NODE_ENV === "development" ? true : false,
 };
 
-connection.database = process.env.NODE_ENV === "test" ? "./src/database/database.test.sqlite" : process.env.DB_DATABASE;
+connection.database = process.env.NODE_ENV === "test" ? "rentx_test" : process.env.DB_DATABASE;
 
 module.exports = connection;
